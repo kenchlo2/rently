@@ -95,6 +95,7 @@ export default function PrimarySearchAppBar({
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [goToHome, setGoToHome] = useState(false);
   const [goToSignOut, setGoToSignOut] = useState(false);
   const [goToSignIn, setGoToSignIn] = useState(false);
   const [favView, setFavView] = useState(false);
@@ -122,6 +123,14 @@ export default function PrimarySearchAppBar({
   const showFavs = () => {
     setFavView(true);
   };
+
+  const handleGoToHome = () => {
+    setGoToHome(true);
+  }
+
+  if (goToHome) {
+    return <Redirect to="/" />;
+  }
 
   const signInOut = isLoggedIn ? 'Sign Out' : 'Sign In';
   const handleSignInOut = () => {
@@ -156,6 +165,7 @@ export default function PrimarySearchAppBar({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem onClick={handleGoToHome}>Home</MenuItem>
       <MenuItem onClick={handleSignInOut}>{signInOut}</MenuItem>
     </Menu>
   );
