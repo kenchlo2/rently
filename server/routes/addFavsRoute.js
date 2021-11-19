@@ -3,9 +3,9 @@ const router = express.Router();
 const favsController = require('../controllers/favsController');
 
 router.post('/',
-  [ favsController.addFavs ],
+  favsController.addFavs,
   (req, res) => {
-    return res.status(209).send('addFavs route success');
+    return res.status(200).send('addFavs route success');
   }
 );
 

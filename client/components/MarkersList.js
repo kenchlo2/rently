@@ -4,10 +4,8 @@ import Pin from './Pin';
 import MapModal from './MapModal';
 import Spinner from './Spinner';
 import api from '../axios/axios';
-// import boiseList from './PropertyTestData/boiseList';
 
-const MarkersList = (props) => {
-  const { status, markers } = props;
+const MarkersList = ({ status, markers, isLoggedIn }) => {
   let features = [];
   let singleLocation = {};
 
@@ -16,12 +14,12 @@ const MarkersList = (props) => {
 
   if (status === 'done') {
     // use case - general area search
-    // e.g. Mountain View, CA
+    // e.g., Mountain View, CA
     if (markers.propertiesForSale) {
       features = markers.propertiesForSale.features;
     }
     // use case - a specific location search
-    // 190 E 72nd St APT 11B, New York, NY 10021
+    // e.g., 190 E 72nd St APT 11B, New York, NY 10021
     else if (markers.targetForSale) {
       singleLocation = markers.targetForSale.features;
       features = singleLocation;
@@ -31,19 +29,12 @@ const MarkersList = (props) => {
     }
   }
 
-  console.log('propertiesForRental ', markers.propertiesForRental);
-  console.log('singleLocation ', singleLocation);
-  console.log('features ', features);
-  // features = boiseList.propertiesForSale.features;
-
   // state to hold specific property details when a pin on the map is clicked.
   // details will be displayed on modal and saved to mongodb if fav added
   const [ propDetail, setPropDetail ] = useState({});
 
   // second api call to get rent data and rating on specific address
   const getDetails = async (e, feature) => {
-    // console.log('clicked property:');
-    // console.log(feature);
     if (markers.propertiesForSale) {
       const res = await api.post('/properties/target', null, {
         headers: {
@@ -61,13 +52,9 @@ const MarkersList = (props) => {
       });
       // console.log(JSON.stringify(res.data.targetForSale, null, 2));
       Object.assign(feature.properties, res.data.targetForSale.features[0].properties);
-      setPropDetail(feature);
-      console.log('PROP DETAIL', propDetail);
-      setMapModalOpen(true);
-    } else {
-      setPropDetail(feature);
-      setMapModalOpen(true);
     }
+    setPropDetail(feature);
+    setMapModalOpen(true);
   };
 
   // open / close handlers for modal
@@ -99,7 +86,6 @@ const MarkersList = (props) => {
         />
       </Marker>
     ));
-    console.log(content)
   } else if (status === 'error') {
     content = <div>{status}</div>;
   }
@@ -112,6 +98,7 @@ const MarkersList = (props) => {
           open={MapModalOpen}
           handleClose={handleClose}
           prop={propDetail}
+          isLoggedIn={isLoggedIn}
         />
       )}
     </div>

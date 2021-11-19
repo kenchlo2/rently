@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+// import Box from '@material-ui/core/Box';
+// import Button from '@material-ui/core/Button';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import api from '../axios/axios';
 import NavBar from './NavBar';
 import FavModal from './FavsModal';
@@ -36,29 +37,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const tileData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
 function TitlebarGridList({ isLoggedIn, setIsLoggedIn, darkState, setDarkState, handleThemeChange }) {
   const classes = useStyles();
   const [tileData, setTileData] = useState([]);
   const [propDetail, setPropDetail] = useState({});
   const [gotFavs, setGotFavs] = useState(false);
   const [favDetailsOpen, setFavDetailsOpen] = useState(false);
+
+  //get request to retrieve favorites
+  const getFavs = async () => {
+    await api({
+      method: 'post',
+      url: '/getFavs'
+    })
+      .then(res => {
+        setTileData(res.data.favsArr);
+        setGotFavs(true);
+      })
+      .catch(err => {
+        console.log('GET FAVS ERROR ', err.message);
+      });
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) getFavs();
+  }, []);
+  
   // open/close handlers for prop detail modal
   const handleOpen = (e, idx) => {
     e.preventDefault();
@@ -70,24 +74,18 @@ function TitlebarGridList({ isLoggedIn, setIsLoggedIn, darkState, setDarkState, 
     setFavDetailsOpen(false);
   };
 
-  //get request to retrieve favorites
-  const getFavs = async () => {
+  const handleDelFavs = async (e, idx) => {
+    e.preventDefault();
     await api({
       method: 'post',
-      url: '/getFavs'
+      url: '/delFav',
+      data: {
+        idx
+      }
     })
-      .then((res) => {
-        setTileData(res.data.favsArr);
-        setGotFavs(true);
-      })
-      .catch((err) => {
-        console.log('GET FAVS ERROR ', err.message);
-      });
+      .then(res => setTileData(res.data.favsArr))
+      .catch(err => console.log('DEL FAV ERROR: ', err));
   };
-
-  useEffect(() => {
-    if (isLoggedIn) getFavs();
-  }, []);
 
   return (
     <div>
@@ -120,15 +118,23 @@ function TitlebarGridList({ isLoggedIn, setIsLoggedIn, darkState, setDarkState, 
                     </span>
                   }
                   actionIcon={
-                    <IconButton
-                      idx={idx}
-                      aria-label={`info about ${tile.address}`}
-                      className={classes.icon}
-                      onClick={(e) => {
-                        handleOpen(e, idx);
-                      }}
-                    >
-                      <InfoIcon />
+                    <IconButton>
+                      <FavoriteIcon
+                        idx={idx}
+                        aria-label={`delete ${tile.address} from favorites`}
+                        className={classes.icon}
+                        onClick={(e) => {
+                          handleDelFavs(e, idx);
+                        }}                      
+                      />
+                      <InfoIcon
+                        idx={idx}
+                        aria-label={`info about ${tile.address}`}
+                        className={classes.icon}
+                        onClick={(e) => {
+                          handleOpen(e, idx);
+                        }}                      
+                      />
                     </IconButton>
                   }
                 />

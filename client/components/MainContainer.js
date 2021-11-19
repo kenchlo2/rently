@@ -19,7 +19,7 @@ const MainContainer = ({ isLoggedIn, setIsLoggedIn, darkState, setDarkState, han
       <Container component="main">
         <Container>
           <Box>
-            <MapView />
+            <MapView isLoggedIn={isLoggedIn} />
           </Box>
         </Container>
       </Container>

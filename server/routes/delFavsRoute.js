@@ -3,7 +3,7 @@ const router = express.Router();
 const favsController = require('../controllers/favsController');
 
 router.post('/',
-  favsController.getFavs,
+  favsController.delFavs,
   (req, res) => {
     return res.status(200).send({ favsArr: res.locals.favsArr });
   }

@@ -6,7 +6,7 @@
     "scripts": {
         "start": "nodemon ./server/server.js",
         "build": "webpack --config webpack.config.js --mode production",
-        "dev": "concurrently \"cross-env NODE_ENV=development webpack server --open --hot --inline --content-base ./\" \"nodemon ./server/server.js\" \"--history-api-fallback\""
+        "dev": "concurrently \"cross-env NODE_ENV=development webpack server --open --hot --inline --content-base ./\" \"nodemon ./server/server.js\""
     },
     "repository": {
         "type": "git",

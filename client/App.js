@@ -86,7 +86,6 @@ const App = () => {
                 handleThemeChange={handleThemeChange}
               />
             </Route>
-            {/* <Route exact path="/test" component={Test} /> */}
           </Switch>
         </main>
       </div>

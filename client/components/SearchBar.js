@@ -5,7 +5,8 @@ import Price from './SearchBarPoppers/Price';
 import BedBath from './SearchBarPoppers/BedBath';
 import HomeType from './SearchBarPoppers/HomeType';
 // import SquareFt from './SearchBarPoppers/SquareFt';
-import axios from 'axios';
+// import axios from 'axios';
+import api from '../axios/axios';
 import Geocoder from 'react-map-gl-geocoder';
 
 const SearchBar = ({
@@ -37,7 +38,7 @@ const SearchBar = ({
     for (const [key, value] of Object.entries(homeTypes)) {
       if (value) home_type.push(key);
     }
-    const res = await axios.post('/api/properties', null, {
+    const res = await api.post('/properties', null, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ const SearchBar = ({
         // maxSquareFT
       },
     });
-    console.log(JSON.stringify(res.data, null, 2));
+    // console.log(JSON.stringify(res.data, null, 2));
     setMarkers(res.data);
   };
 

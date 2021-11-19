@@ -38,7 +38,6 @@ router.all('/',
 // handler for a clicked address search on a property pinned on the map
 router.post('/target',
   (req, res, next) => {
-    console.log('target #0:')
     res.locals.targetForSale = {
       features:
         [{
@@ -48,8 +47,6 @@ router.post('/target',
           }
         }]
     };
-    console.log('target #1:')
-    console.log(res.locals)
     Object.assign(req.params, {
       location: req.query.location.slice(-5),
       status_type: 'ForRent',
@@ -59,13 +56,10 @@ router.post('/target',
       bathsMin: req.query.baths,
       bathsMax: req.query.baths
     });
-    console.log('target #2:')
-    console.log(req.params)
     middlewares.getPropertiesForRental(req, res, next);
   },
   (req, res) => {
-    console.log('Response of target endpoint:')
-    console.log(JSON.stringify(res.locals, null, 2));
+    // console.log(JSON.stringify(res.locals, null, 2));
     return res.status(200).json(res.locals);
   }
 );

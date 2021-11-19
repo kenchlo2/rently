@@ -55,7 +55,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin({
       // Options...
     }),
-    // new webpack.DefinePlugin(envKeys),
+    // new webpack.DefinePlugin(envKeys)
     new webpack.DefinePlugin({ 'process.env.MAPBOX_API_KEY': JSON.stringify(env.MAPBOX_API_KEY) })
   ],
   devServer: {

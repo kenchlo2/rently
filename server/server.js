@@ -5,11 +5,6 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const cors = require('cors');
-// const fetch = require('node-fetch');
-
-// import direct controllers
-const sessionController = require('./controllers/sessionController');
-// const cookieController = require('./controllers/cookieController');
 
 // import routes
 const signupRouter = require('./routes/signupRoute');
@@ -18,9 +13,10 @@ const signoutRouter = require('./routes/signoutRoute');
 const isLoggedInRouter = require('./routes/isLoggedInRoute');
 const propertiesRouter = require('./routes/propertiesRoute');
 const addFavsRouter = require('./routes/addFavsRoute');
+const delFavsRouter = require('./routes/delFavsRoute');
 const getFavsRouter = require('./routes/getFavsRoute');
 
-//db connection
+// connect to db
 mongoose
   .connect(process.env.DATABASE)
   .then(res => console.log('Connected to DB'))
@@ -47,6 +43,9 @@ app.use('/properties', propertiesRouter);
 
 // add favorites route
 app.use('/addFav', addFavsRouter);
+
+// add favorites route
+app.use('/delFav', delFavsRouter);
 
 // get favorites route
 app.use('/getFavs', getFavsRouter);

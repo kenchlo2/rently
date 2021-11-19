@@ -5,8 +5,6 @@ const { quantileSorted } = require('d3');
 
 const middlewares = {};
 
-console.log(process.env.ZILLOW_API_KEY);
-
 const headers = {
   'x-rapidapi-key': process.env.ZILLOW_API_KEY,
   'x-rapidapi-host': 'zillow-com1.p.rapidapi.com',
@@ -32,29 +30,13 @@ middlewares.getPropertiesForSale = async (req, res, next) => {
   if (! isNaN(Number(req.query.bathsMin))) params.bathsMin = Number(req.query.bathsMin);
   if (! isNaN(Number(req.query.minPrice))) params.minPrice = Number(req.query.minPrice);
   if (! isNaN(Number(req.query.maxPrice))) params.maxPrice = Number(req.query.maxPrice);
-  // const params = {
-  //   location: '111 Balcaro Way UNIT 88, Sacramento, CA 95834',
-  //   // location: '2470 Peachtree Ln, San Jose, CA 95128',
-  //   // location: 'san jose, ca',
-  //   // location: 'mountain view, ca',
-  //   status_type: 'ForSale',
-  //   // home_type: 'Houses',
-  //   bathsMin: '2',
-  //   bathsMax: '2',
-  //   bedsMin: '2',
-  //   bedsMax: '2'
-  // };
   url.search = new URLSearchParams(params).toString();
-  console.log(url);
   const result = await fetch(url, { method: 'GET', headers: headers }).then(
     (res) => res.json()
   );
-  console.log('round 1 result')
-  console.log(result);
+  // console.log(result);
 
   if ('zpid' in result) {
-    console.log('zpid')
-    console.log(result.zpid)
     res.locals.zpid = result.zpid;
   } else if ('totalResultCount' in result) {
     if (result.totalResultCount > 0) {
@@ -94,7 +76,6 @@ middlewares.getPropertiesForSale = async (req, res, next) => {
           )
       };
     }
-    console.log('im here')
   } else {
     return next({
       log: 'getPropertiesForSale: ERROR: Invalid search query.',
@@ -112,7 +93,6 @@ middlewares.getTargetForSale = async (req, res, next) => {
     zpid: req.params.zpid
   };
   url.search = new URLSearchParams(params).toString();
-  console.log(url);
   const result = await fetch(url, { method: 'GET', headers: headers })
     .then(res => res.json());
 
@@ -178,21 +158,10 @@ middlewares.getTargetForSale = async (req, res, next) => {
 };
 
 middlewares.getPropertiesForRental = async (req, res, next) => {
-  console.log('i am here getPropertiesForRental')
   const url = new URL(
     'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch'
   );
-  // const params = {
-  //   'location': req.params.zip,
-  //   'status_type': 'ForRent',
-  //   // 'home_type': 'Houses',
-  //   'bathsMin': '2',
-  //   'bathsMax': '2',
-  //   'bedsMin': '2',
-  //   'bedsMax': '2'
-  // };
   url.search = new URLSearchParams(req.params).toString();
-  console.log(url);
   const result = await fetch(url, { method: 'GET', headers: headers })
     .then(res => res.json());
 

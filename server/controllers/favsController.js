@@ -2,48 +2,68 @@ const User = require('../models/userModel');
 const favsController = {};
 
 favsController.addFavs = (req, res, next) => {
-  //verify favorite and email are on the request
-  // if (!req.body.favorite || !req.cookies.ssid) {
-  //   console.log('no favorites found');
-  //   return res
-  //     .status(501)
-  //     .send('favsController.addFavs error: nothing on body');
-  // } else {
-  // console.log('INSIDE ELSE');
-
-  console.log('SSID ', req.cookies.ssid);
-  //find the user
-  // User.findById(req.cookies)
-  User.findById(req.cookies.ssid)
-    .then((user) => {
-      console.log('INSIDE FIND', user);
-      //grab the existing favs array
-      const favs = user.favorites;
-      //push new fav onto it
-      favs.push(req.body.favorite);
-      //set the new favs array to the user favorites
-      user.favorites = favs;
-      //save it
-      user.save();
-    })
-    .then(() => next())
-    .catch((err) => console.log('favscontroller.addfavs error, ', err.message));
+  if (! req.cookies.ssid) {
+    return next({
+      log: 'favsController.addFavs: ERROR: ' + 'User not logged in!',
+      message: { err: 'User not logged in!' }
+    });
+  } else {
+    User.findById(req.cookies.ssid)
+      .then(user => {
+        const favs = user.favorites;
+        const found = favs.map(fav => fav.ZPID).includes(req.body.favorite.ZPID);
+        if (! found) {
+          favs.push(req.body.favorite);
+          user.favorites = favs;
+          user.save();
+        }
+      })
+      .then(() => next())
+      .catch(err => next({
+        log: 'favsController.addFavs: ERROR: ' + JSON.stringify(err),
+        message: { err }
+      }));
+  }
 };
 
 favsController.getFavs = (req, res, next) => {
-  //verify email is on the request
-  // console.log('in get favs');
   if (! req.cookies.ssid) {
-    return res.status(500).send('favsController.getFavs error: no email property');
+    return next({
+      log: 'favsController.getFavs: ERROR: ' + 'User not logged in!',
+      message: { err: 'User not logged in!' }
+    });
   } else {
     User.findById(req.cookies.ssid)
-      .then((user) => {
-        console.log(user);
+      .then(user => {
         res.locals.favsArr = user.favorites;
       })
       .then(() => next())
-      .catch((err) => console.log('favscontroller.getFavs error, ', err));
-  }
+      .catch(err => next({
+        log: 'favsController.getFavs: ERROR: ' + JSON.stringify(err),
+        message: { err }
+      }));
+    }
+};
+
+favsController.delFavs = (req, res, next) => {
+  if (! req.cookies.ssid) {
+    return next({
+      log: 'favsController.delFavs: ERROR: ' + 'User not logged in!',
+      message: { err: 'User not logged in!' }
+    });
+  } else {
+    User.findById(req.cookies.ssid)
+      .then(user => {
+        user.favorites.splice(req.body.idx, 1);
+        user.save();
+        res.locals.favsArr = user.favorites;
+      })
+      .then(() => next())
+      .catch(err => next({
+        log: 'favsController.delFavs: ERROR: ' + JSON.stringify(err),
+        message: { err }
+      }));
+    }
 };
 
 module.exports = favsController;

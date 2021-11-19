@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import MarkersList from './MarkersList';
 import SearchBar from './SearchBar';
-
 // import boiseList from './PropertyTestData/boiseList';
 
 const mapboxApiKey = process.env.MAPBOX_API_KEY;
@@ -26,8 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MapView = () => {
-  // 190 E 72nd St APT 11B, New York, NY 10021
+const MapView = ({ isLoggedIn }) => {
   /** Marker data should look like this:
   {
     "properties": {
@@ -61,11 +59,9 @@ const MapView = () => {
   */
   const [ status, setStatus ] = useState(null);
   const [ markers, setMarkers ] = useState({});
-  // console.log('markers data ', markers);
 
   useEffect(() => {
     const defaultLocation = 'Mountain View, CA';
-    // const defaultLocation = 'Garden City, MI';
     const fetchMarkers = async () => {
       // update API call status
       setStatus('loading');
@@ -78,10 +74,7 @@ const MapView = () => {
         });
 
         const results = await res.json();
-        // console.log('results ', results);
         setMarkers(results);
-
-        // //// TBD
         // setMarkers(boiseList);
 
         // update API call status
@@ -116,9 +109,6 @@ const MapView = () => {
     // default location - Mountain View, CA
     longitude: -122.08200104737605,
     latitude: 37.38560001105436,
-    //// default location - Garden City, MI
-    // longitude: -116.299356,
-    // latitude: 43.669685,
     zoom: 12,
     bearing: 0,
     pitch: 0
@@ -161,7 +151,7 @@ const MapView = () => {
             {...mapStyle}
             onViewportChange={handleViewportChange}
           >
-            <MarkersList markers={markers} status={status} />
+            <MarkersList markers={markers} status={status} isLoggedIn={isLoggedIn} />
 
             <div style={navStyle}>
               <NavigationControl />

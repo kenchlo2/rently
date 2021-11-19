@@ -8,8 +8,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Typography, Grid, Card, Divider, Box } from '@material-ui/core';
 import api from '../axios/axios';
 
-const MapModal = ({ open, handleClose, prop }) => {
-  console.log(prop);
+const MapModal = ({ open, handleClose, prop, isLoggedIn }) => {
   const property = prop.properties;
 
   const useStyles = makeStyles((theme) => ({
@@ -33,22 +32,25 @@ const MapModal = ({ open, handleClose, prop }) => {
     }
   }));
   const classes = useStyles();
+
   const [ clickedFav, setClickedFav ] = useState(false);
   const favIcon = clickedFav ? <FavoriteIcon /> : <FavoriteBorderIcon />;
+  
   const handleAddFavs = (e) => {
     e.preventDefault();
-    setClickedFav(! clickedFav);
-    const favorite = property;
-    console.log('FAVORITE', favorite);
-    api({
-      method: 'post',
-      url: '/addFav',
-      data: {
-        favorite: favorite
-      },
-    })
-      .then((res) => console.log('ADD FAV RESPONSE ', res.data))
-      .catch((err) => console.log('ADD FAV ERROR', err));
+    if (isLoggedIn) {
+      setClickedFav(! clickedFav);
+      const favorite = property;
+      api({
+        method: 'post',
+        url: '/addFav',
+        data: {
+          favorite: favorite
+        }
+      })
+        .then(res => res)
+        .catch(err => console.log('ADD FAV ERROR: ', err));
+    }
   };
   
   return (
@@ -58,7 +60,6 @@ const MapModal = ({ open, handleClose, prop }) => {
       className={classes.container}
       property={property}
     >
-      {console.log('PROPERTY ', property)}
       <Box className={classes.card}>
         <Grid>
           <Grid container justify="flex-end">

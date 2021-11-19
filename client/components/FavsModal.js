@@ -78,7 +78,7 @@ const FavModal = ({ open, handleClose, prop }) => {
             {'Est. monthly rent' in prop && (
               <Grid xs={12}>
                 <Typography>
-                  Est/ Monthly Rent: {prop['Est. monthly rent']}
+                  Est. Monthly Rent: {prop['Est. monthly rent']}
                 </Typography>
               </Grid>
             )}
