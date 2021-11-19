@@ -27,35 +27,35 @@ app.use(express.json());
 app.use(cookieParser());
 
 // signup route
-app.use('/register', signupRouter);
+app.use('/api/register', signupRouter);
 
 // signin route
-app.use('/signin', signinRouter);
+app.use('/api/signin', signinRouter);
 
 // signout route
-app.use('/signout', signoutRouter);
+app.use('/api/signout', signoutRouter);
 
 // signin route
-app.use('/isLoggedIn', isLoggedInRouter);
+app.use('/api/isLoggedIn', isLoggedInRouter);
 
 // properties route
-app.use('/properties', propertiesRouter);
+app.use('/api/properties', propertiesRouter);
 
 // add favorites route
-app.use('/addFav', addFavsRouter);
+app.use('/api/addFav', addFavsRouter);
 
 // add favorites route
-app.use('/delFav', delFavsRouter);
+app.use('/api/delFav', delFavsRouter);
 
 // get favorites route
-app.use('/getFavs', getFavsRouter);
+app.use('/api/getFavs', getFavsRouter);
 
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
 //serve index.html - NOTE - THIS ROUTE NEVER ACTUALLY HITS (react router serves up the page??)
-app.get('/',
+app.get('/*',
   (req, res) => {
-    return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+    return res.status(200).sendFile(path.join(__dirname, '../dist/index.html'));
   }
 );
 
