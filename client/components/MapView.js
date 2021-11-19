@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import MarkersList from './MarkersList';
 import SearchBar from './SearchBar';
+import api from '../axios/axios';
 // import boiseList from './PropertyTestData/boiseList';
 
 const mapboxApiKey = process.env.MAPBOX_API_KEY;
@@ -66,15 +67,17 @@ const MapView = ({ isLoggedIn }) => {
       // update API call status
       setStatus('loading');
       try {
-        const res = await fetch(`/api/properties?location=${defaultLocation}`, {
-          method: 'POST',
+        const res = await api.post('/properties', null, {
           headers: {
-            'Content-type': 'application/json'
-          }
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          params: {
+            location: defaultLocation
+          },
         });
 
-        const results = await res.json();
-        setMarkers(results);
+        setMarkers(res.data);
         // setMarkers(boiseList);
 
         // update API call status
