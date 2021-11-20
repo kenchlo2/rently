@@ -7,7 +7,7 @@ router.all('/',
   middlewares.getPropertiesForSale,
   (req, res, next) => {
     if ('zpid' in res.locals) {
-      req.params.zpid = res.locals.zpid;
+      req.body.zpid = res.locals.zpid;
       middlewares.getTargetForSale(req, res, next);
     } else {
       return next();
@@ -16,7 +16,7 @@ router.all('/',
   (req, res, next) => {
     if ('targetForSale' in res.locals) {
       const target = res.locals.targetForSale['features'][0]['properties'];
-      Object.assign(req.params, {
+      Object.assign(req.body, {
         location: target['Zip code'],
         status_type: 'ForRent',
         home_type: target['Type'],
@@ -42,19 +42,19 @@ router.post('/target',
       features:
         [{
           properties: {
-            Price: req.query.Price,
-            ZPID: req.query.ZPID
+            Price: req.body.Price,
+            ZPID: req.body.ZPID
           }
         }]
     };
-    Object.assign(req.params, {
-      location: req.query.location.slice(-5),
+    Object.assign(req.body, {
+      location: req.body.location.slice(-5),
       status_type: 'ForRent',
-      home_type: req.query.home_type,
-      bedsMin: req.query.beds,
-      bedsMax: req.query.beds,
-      bathsMin: req.query.baths,
-      bathsMax: req.query.baths
+      home_type: req.body.home_type,
+      bedsMin: req.body.beds,
+      bedsMax: req.body.beds,
+      bathsMin: req.body.baths,
+      bathsMax: req.body.baths
     });
     middlewares.getPropertiesForRental(req, res, next);
   },

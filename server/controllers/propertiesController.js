@@ -17,23 +17,22 @@ const calcMortgage = (price, int, down = 0.2, years = 30) => {
 };
 
 middlewares.getPropertiesForSale = async (req, res, next) => {
-  console.log(req.query);
+  console.log(req.body);
   const url = new URL(
     'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch'
   );
   const params = {
-    location: req.query.location.replace(/, United States$/, ''),
+    location: req.body.location.replace(/, United States$/, ''),
     status_type: 'ForSale',
   };
-  if (req.query.home_type !== '') params.home_type = req.query.home_type;
-  if (! isNaN(Number(req.query.bedsMin))) params.bedsMin = Number(req.query.bedsMin);
-  if (! isNaN(Number(req.query.bathsMin))) params.bathsMin = Number(req.query.bathsMin);
-  if (! isNaN(Number(req.query.minPrice))) params.minPrice = Number(req.query.minPrice);
-  if (! isNaN(Number(req.query.maxPrice))) params.maxPrice = Number(req.query.maxPrice);
+  if (req.body.home_type !== '') params.home_type = req.body.home_type;
+  if (! isNaN(Number(req.body.bedsMin))) params.bedsMin = Number(req.body.bedsMin);
+  if (! isNaN(Number(req.body.bathsMin))) params.bathsMin = Number(req.body.bathsMin);
+  if (! isNaN(Number(req.body.minPrice))) params.minPrice = Number(req.body.minPrice);
+  if (! isNaN(Number(req.body.maxPrice))) params.maxPrice = Number(req.body.maxPrice);
   url.search = new URLSearchParams(params).toString();
-  const result = await fetch(url, { method: 'GET', headers: headers }).then(
-    (res) => res.json()
-  );
+  const result = await fetch(url, { method: 'GET', headers: headers })
+    .then(res => res.json());
   // console.log(result);
 
   if ('zpid' in result) {
@@ -90,7 +89,7 @@ middlewares.getPropertiesForSale = async (req, res, next) => {
 middlewares.getTargetForSale = async (req, res, next) => {
   const url = new URL('https://zillow-com1.p.rapidapi.com/property');
   const params = {
-    zpid: req.params.zpid
+    zpid: req.body.zpid
   };
   url.search = new URLSearchParams(params).toString();
   const result = await fetch(url, { method: 'GET', headers: headers })
@@ -161,7 +160,7 @@ middlewares.getPropertiesForRental = async (req, res, next) => {
   const url = new URL(
     'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch'
   );
-  url.search = new URLSearchParams(req.params).toString();
+  url.search = new URLSearchParams(req.body).toString();
   const result = await fetch(url, { method: 'GET', headers: headers })
     .then(res => res.json());
 

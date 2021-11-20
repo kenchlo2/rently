@@ -36,20 +36,26 @@ const MarkersList = ({ status, markers, isLoggedIn }) => {
   // second api call to get rent data and rating on specific address
   const getDetails = async (e, feature) => {
     if (markers.propertiesForSale) {
-      const res = await api.post('/properties/target', null, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        params: {
-          location: feature['properties']['Address'],
-          home_type: feature['properties'].Type,
-          beds: feature['properties']['# bedrooms'],
-          baths: feature['properties']['# bathrooms'],
-          Price: feature['properties'].Price,
-          ZPID: feature['properties'].ZPID
-        }
+      const body = {
+        location: feature['properties']['Address'],
+        home_type: feature['properties'].Type,
+        beds: feature['properties']['# bedrooms'],
+        baths: feature['properties']['# bathrooms'],
+        Price: feature['properties'].Price,
+        ZPID: feature['properties'].ZPID
+      };
+      Object.keys(body).forEach(key => {
+        if (body[key] === null || body[key] === undefined) delete body[key];
       });
+      const res = await api.post('/properties/target', 
+        body,
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       // console.log(JSON.stringify(res.data.targetForSale, null, 2));
       Object.assign(feature.properties, res.data.targetForSale.features[0].properties);
     }

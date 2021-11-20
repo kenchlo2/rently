@@ -38,22 +38,28 @@ const SearchBar = ({
     for (const [key, value] of Object.entries(homeTypes)) {
       if (value) home_type.push(key);
     }
-    const res = await api.post('/properties', null, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      params: {
-        location: address,
-        minPrice,
-        maxPrice,
-        bedsMin: beds,
-        bathsMin: baths,
-        home_type: home_type.toString()
-        // minSquareFT,
-        // maxSquareFT
-      },
+    const body = {
+      location: address,
+      minPrice,
+      maxPrice,
+      bedsMin: beds,
+      bathsMin: baths,
+      home_type: home_type.toString()
+      // minSquareFT,
+      // maxSquareFT
+    };
+    Object.keys(body).forEach(key => {
+      if (body[key] === null || body[key] === undefined) delete body[key];
     });
+    const res = await api.post('/properties',
+      body,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    );
     // console.log(JSON.stringify(res.data, null, 2));
     setMarkers(res.data);
   };

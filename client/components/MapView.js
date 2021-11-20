@@ -67,15 +67,15 @@ const MapView = ({ isLoggedIn }) => {
       // update API call status
       setStatus('loading');
       try {
-        const res = await api.post('/properties', null, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          params: {
-            location: defaultLocation
-          },
-        });
+        const res = await api.post('/properties',
+          { location: defaultLocation },
+          {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            }
+          }
+        );
 
         setMarkers(res.data);
         // setMarkers(boiseList);
