@@ -47,7 +47,7 @@ const App = () => {
       <div className="router">
         <main>
           <Switch>
-            <Route exact path="/">
+            <Route exact path="/rently">
               {/* <NavBar
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}
@@ -63,14 +63,14 @@ const App = () => {
                 handleThemeChange={handleThemeChange}
               />
             </Route>
-            <Route exact path="/signin">
+            <Route exact path="/rently/signin">
               <SignIn isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             </Route>
 
-            <Route exact path="/register">
+            <Route exact path="/rently/register">
               <Register isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             </Route>
-            <Route exact path="/favs">
+            <Route exact path="/rently/favs">
               {/* <NavBar
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}

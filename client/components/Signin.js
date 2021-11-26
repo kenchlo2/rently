@@ -88,7 +88,7 @@ export default function SignIn({ isLoggedIn, setIsLoggedIn }) {
     });
   };
 
-  if (isLoggedIn) return <Redirect to="/" />;
+  if (isLoggedIn) return <Redirect to="/rently/" />;
 
   return (
     <Container component="main" maxWidth="xs">

@@ -129,7 +129,7 @@ export default function PrimarySearchAppBar({
   }
 
   if (goToHome) {
-    return <Redirect to="/" />;
+    return <Redirect to="/rently/" />;
   }
 
   const signInOut = isLoggedIn ? 'Sign Out' : 'Sign In';
@@ -148,11 +148,11 @@ export default function PrimarySearchAppBar({
       url: '/signout'
     }).then((res) => {
       setIsLoggedIn(res.data.isLoggedIn);
-      return <Redirect to="/" />;
+      return <Redirect to="/rently/" />;
     });
   }
-  if (goToSignIn) return <Redirect to="/signin" />;
-  if (favView) return <Redirect to="/favs" />;
+  if (goToSignIn) return <Redirect to="/rently/signin" />;
+  if (favView) return <Redirect to="/rently/favs" />;
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
