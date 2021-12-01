@@ -23,6 +23,7 @@ const SearchBar = ({
   const [homeTypes, setHomeTypes] = useState({});
   const [minSquareFT, setMinSquareFT] = useState(null);
   const [maxSquareFT, setMaxSquareFT] = useState(null);
+  const [inputValue, setInputValue] = useState(null);
 
   const useStyles = makeStyles((theme) => ({
     paper: {
@@ -78,11 +79,15 @@ const SearchBar = ({
             mapRef={mapRef}
             contianerRef={geocoderContainerRef}
             mapboxApiAccessToken={mapboxApiKey}
+            inputValue={inputValue}
+            countries={'US'}
             onViewportChange={handleGeocoderViewportChange}
             onResult={({ result }) => {
               const address = result.place_name;
               onSubmit(address);
+              setInputValue('');
             }}
+            onClear={() => setInputValue('')}
           />
 
           <Price

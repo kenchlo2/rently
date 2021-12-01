@@ -24,11 +24,11 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Rently
-      </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
+      {' by '}
+      <Link color="inherit" href="https://github.com/kenchlo2/rently#readme">
+        kenchlo2
+      </Link>
     </Typography>
   );
 }
