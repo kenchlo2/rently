@@ -153,6 +153,7 @@ middlewares.getTargetForSale = async (req, res, next) => {
     });
   }
 
+  await new Promise(resolve => setTimeout(resolve, 1100));
   return next();
 };
 
