@@ -81,6 +81,7 @@ const SearchBar = ({
             mapboxApiAccessToken={mapboxApiKey}
             inputValue={inputValue}
             countries={'US'}
+            types={'address,place,locality'}
             onViewportChange={handleGeocoderViewportChange}
             onResult={({ result }) => {
               const address = result.place_name;
