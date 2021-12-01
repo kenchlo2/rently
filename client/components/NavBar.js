@@ -181,21 +181,11 @@ export default function PrimarySearchAppBar({
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
+      <MenuItem onClick={showFavs}>
+        <IconButton aria-label="show favorites" color="inherit">
+          <FavoriteIcon />
         </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+        <p>Favorites</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -215,21 +205,15 @@ export default function PrimarySearchAppBar({
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
+            Rently
+          </Typography>
+          <Typography className={classes.sectionMobile} variant="h6" noWrap>
             Rently
           </Typography>
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button onclick={handleThemeChange} />
             <IconButton color="inherit" onClick={handleThemeChange}>
               <Brightness7Icon />
             </IconButton>
