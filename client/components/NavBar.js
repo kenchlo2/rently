@@ -14,6 +14,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 // import SearchIcon from '@material-ui/icons/Search';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import HelpIcon from '@material-ui/icons/Help';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -124,6 +126,10 @@ export default function PrimarySearchAppBar({
     setFavView(true);
   };
 
+  const showHelp = () => {
+    window.open('https://github.com/kenchlo2/rently#readme', '_blank');
+  };
+
   const handleGoToHome = () => {
     setGoToHome(true);
   }
@@ -198,6 +204,12 @@ export default function PrimarySearchAppBar({
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={showHelp}>
+        <IconButton aria-label="help" color="inherit">
+          <HelpOutlineIcon />
+        </IconButton>
+        <p>Help</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -221,7 +233,7 @@ export default function PrimarySearchAppBar({
               <FavoriteIcon onClick={showFavs} />
             </IconButton>
             <IconButton
-              edge="end"
+              // edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
@@ -229,6 +241,9 @@ export default function PrimarySearchAppBar({
               color="inherit"
             >
               <AccountCircle />
+            </IconButton>
+            <IconButton aria-label="help" color="inherit">
+              <HelpOutlineIcon onClick={showHelp} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
